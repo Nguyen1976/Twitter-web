@@ -1,5 +1,11 @@
+import { Alert } from "flowbite-react"
+
 function App() {
-  return <div className='text-red-700 font-bold text-2xl'>Hello world</div>
+  return (
+    <Alert color='info'>
+      <span className='font-medium'>Info alert!</span> Change a few things up and try submitting again.
+    </Alert>
+  )
 }
 
 export default App

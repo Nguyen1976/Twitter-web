@@ -10,9 +10,11 @@
     "preview": "vite preview",
     "lint:fix": "eslint . --fix",
     "prettier": "prettier --check \"src/**/(*.tsx|*.ts|*.css|*.scss)\"",
-    "prettier:fix": "prettier --write \"src/**/(*.tsx|*.ts|*.css|*.scss)\""
+    "prettier:fix": "prettier --write \"src/**/(*.tsx|*.ts|*.css|*.scss)\"",
+    "postinstall": "flowbite-react patch"
   },
   "dependencies": {
+    "flowbite-react": "^0.11.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
