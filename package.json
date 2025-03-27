@@ -14,9 +14,11 @@
     "postinstall": "flowbite-react patch"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "flowbite-react": "^0.11.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-router-dom": "^7.4.0",
     "twitter-web": "file:"
   },
   "devDependencies": {
