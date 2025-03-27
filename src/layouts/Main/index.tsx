@@ -7,7 +7,7 @@ const Main: FC<{ children: ReactNode }> = ({ children }) => {
     <div className='container'>
       <div className='grid grid-cols-4 gap-4'>
         <Header />
-        <main className='col-span-3'>{children}</main>
+        <main className='col-span-3 col-start-2'>{children}</main>
       </div>
     </div>
   )

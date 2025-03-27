@@ -8,7 +8,7 @@ const Header = () => {
   const pathName = location.pathname
 
   return (
-    <header className='overflow-y-auto'>
+    <header className='fixed top-0 bottom-0 overflow-y-auto custom-scrollbar'>
       <div className='h-header py-2 flex justify-start items-center'>
         <div className='p-2 rounded-full hover:bg-zinc-300'>
           <img className='h-logo' src='src/assets/twitter.png' alt='' />
