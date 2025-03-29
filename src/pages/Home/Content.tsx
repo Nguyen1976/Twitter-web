@@ -1,5 +1,10 @@
 const Content = () => {
-  return <div>Content</div>
+  return (
+    <div className="border-[1px] h-screen">
+      {/* Tabs */}
+      
+    </div>
+  )
 }
 
 export default Content

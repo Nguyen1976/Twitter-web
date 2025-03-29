@@ -10,6 +10,7 @@ function App() {
           const Page = route.page
           return (
             <Route
+              key={route.path}
               path={route.path}
               element={
                 <Layout>
