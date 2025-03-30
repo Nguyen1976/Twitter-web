@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import '@fontsource/inter/variable.css';
+
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px;
 }

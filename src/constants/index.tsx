@@ -367,3 +367,8 @@ export const dropDownItemMore = [
     text: 'Settings and privacy'
   }
 ]
+
+export const OPTION_TABS = {
+  FOR_YOU: 'Foryou',
+  FOLLOWING: 'Following'
+} as const

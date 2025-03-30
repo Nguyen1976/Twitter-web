@@ -2,11 +2,17 @@ import React from 'react'
 
 interface ButtonProps {
   text: string
+  large?: boolean
+  className?: string
 }
 
-const Button: React.FC<ButtonProps> = ({ text }) => {
+const Button: React.FC<ButtonProps> = ({ text, large = false, className }) => {
   return (
-    <button className='py-3 bg-black text-xl text-white font-bold w-full rounded-full'>{text}</button>
+    <button
+      className={`bg-black text-white font-bold rounded-full ${large ? ' w-full py-3 text-xl' : 'py-2 px-5'} ${className}`}
+    >
+      {text}
+    </button>
   )
 }
 

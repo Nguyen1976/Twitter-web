@@ -67,7 +67,7 @@ const Header = () => {
         </Dropdown>
       </nav>
       <div className='mt-2'>
-        <Button text={'Post'} />
+        <Button text={'Post'} large={true} />
       </div>
 
       {/* User */}

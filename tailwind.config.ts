@@ -8,6 +8,9 @@ const config: Config = {
       height: {
         header: '52px',
         logo: '26px'
+      },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif']
       }
     },
     container: {
