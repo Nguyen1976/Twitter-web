@@ -1,13 +1,21 @@
 import { Avatar, Tooltip } from 'flowbite-react'
 import Button from '~/components/Button'
+import TextareaAutosize from 'react-textarea-autosize'
+import { useState } from 'react'
 
 const Publish = () => {
+  const [content, setContent] = useState<string>('')
   return (
     <div className='flex gap-3 p-3 border-b-[1px]'>
       <Avatar rounded className='flex items-start' />
       <div className='flex-1'>
         <div className='border-b-[1px] pb-4 mb-4'>
-          <input type='text' placeholder="What's happening?" className='border-none outline-none text-xl w-full mt-1' />
+          {/* <input type='text' placeholder="What's happening?" className='border-none outline-none text-xl w-full mt-1' /> */}
+          <TextareaAutosize
+            maxRows={17}
+            onChange={(e) => setContent(e.target.value)}
+            className='border-none outline-none text-xl w-full mt-1 resize-none'
+          />
           <div className='flex text-sm font-bold text-blue-500 mt-3'>
             <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor' className='size-5'>
               <path
