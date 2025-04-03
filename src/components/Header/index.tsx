@@ -10,7 +10,7 @@ const Header = () => {
   const pathName = location.pathname
 
   return (
-    <header className='fixed top-0 bottom-0 overflow-y-auto custom-scrollbar flex flex-col justify-between mb-7'>
+    <header className='fixed top-0 bottom-0 overflow-y-auto custom-scrollbar flex flex-col justify-between mb-7 h-screen py-4'>
       <div className='h-header py-2 flex justify-start items-center'>
         <div className='p-2 rounded-full hover:bg-zinc-300'>
           <img className='h-logo' src='src/assets/twitter.png' alt='' />
@@ -66,19 +66,25 @@ const Header = () => {
           ))}
         </Dropdown>
       </nav>
+
       <div className='mt-2'>
-        <Button text={'Post'} large={true} />
+        <div className='xl:block hidden'>
+          <Button text={'Post'} large={true} />
+        </div>
+        <p className='w-12 h-12 flex items-center justify-center bg-black rounded-full xl:hidden'>
+          <img width='35' height='35' src='https://img.icons8.com/sf-regular/48/FFFFFF/leaf.png' alt='leaf' />
+        </p>
       </div>
 
       {/* User */}
       <div className='rounded-full flex gap-5 items-center justify-center mt-4'>
         {/* <Avatar img='/src/assets/twitter.png' alt='avatar of Jese' rounded /> */}
-        <Avatar rounded />
-        <div className='flex flex-col items-center justify-center'>
+        <Avatar className='mr-3 xl:mr-0' rounded />
+        <div className='xl:flex flex-col items-center justify-center hidden'>
           <p className='font-bold'>Nguyen Nguyen</p>
           <p className='text-sm text-zinc-500'>@shouta9271</p>
         </div>
-        <AdjustmentsHorizontalIcon className='h-6 w-6 text-black' />
+        <AdjustmentsHorizontalIcon className='h-6 w-6 text-black hidden xl:block' />
       </div>
     </header>
   )

@@ -5,9 +5,9 @@ import { FC, ReactNode } from 'react'
 const Main: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <div className='container'>
-      <div className='grid grid-cols-4 gap-2'>
+      <div className='grid xl:grid-cols-5 gap-2 grid-cols-16'>
         <Header />
-        <main className='col-span-3 col-start-2 text-center'>{children}</main>
+        <main className='xl:col-span-4 !col-start-2 col-span-12 text-center'>{children}</main>
       </div>
     </div>
   )

@@ -11,6 +11,9 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif']
+      },
+      gridTemplateColumns: {
+        '16': 'repeat(16, minmax(0, 1fr))',
       }
     },
     container: {
@@ -18,7 +21,7 @@ const config: Config = {
       padding: {
         DEFAULT: '1rem',
         sm: '2rem',
-        lg: '3rem',
+        lg: '2rem',
         xl: '4rem',
         '2xl': '8rem'
       }
