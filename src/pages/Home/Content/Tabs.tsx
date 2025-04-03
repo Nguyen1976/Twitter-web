@@ -15,7 +15,7 @@ const Tabs: React.FC<TabsProps> = ({ tab, setTab }) => {
     setTab(OPTION_TABS.FOLLOWING)
   }
   return (
-    <div>
+    <div className='bg-[#ffffffd9] backdrop-blur-md sticky top-0 z-10'>
       {/* Tablist */}
       <div className='flex justify-center items-center border-b-[1px] transition-all'>
         <div
