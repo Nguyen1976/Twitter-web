@@ -10,7 +10,7 @@ const config: Config = {
         logo: '26px'
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif']
+        sans: ['Chirp', 'sans-serif']
       },
       gridTemplateColumns: {
         '16': 'repeat(16, minmax(0, 1fr))',

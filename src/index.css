@@ -2,7 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-@import '@fontsource/inter/variable.css';
+/*fonts*/
+@font-face {
+  font-family: 'Chirp';
+  src: url('/src/assets/fonts/Chirp-Bold.ebb56aba.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Chirp';
+  src: url('/src/assets/fonts/Chirp-Heavy.f44ae4ea.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Chirp';
+  src: url('/src/assets/fonts/Chirp-Medium.f8e2739a.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Chirp';
+  src: url('/src/assets/fonts/Chirp-Regular.80fda27a.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
 
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px;
