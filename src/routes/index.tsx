@@ -12,7 +12,7 @@ interface routesItem {
 
 export const routes: routesItem[] = [
   {
-    path: 'home',
+    path: '/home',
     page: Home,
     layout: Main
   }

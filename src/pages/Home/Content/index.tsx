@@ -15,7 +15,7 @@ const Content = () => {
    */
 
   return (
-    <div className='border-[1px] h-screen'>
+    <div className='border-[1px]'>
       {/* Tabs */}
       <Tabs tab={tab} setTab={setTab} />
       <Publish />
