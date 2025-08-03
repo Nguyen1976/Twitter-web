@@ -10,10 +10,11 @@ const config: Config = {
         logo: '26px'
       },
       fontFamily: {
-        sans: ['Chirp', 'sans-serif']
+        sans: ['Chirp', 'sans-serif'],
+        playfair: ['"Playfair Display"', 'cursive']
       },
       gridTemplateColumns: {
-        '16': 'repeat(16, minmax(0, 1fr))',
+        '16': 'repeat(16, minmax(0, 1fr))'
       }
     },
     container: {

@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Imperial+Script&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Playwrite+HU:wght@100..400&family=Playwrite+PL:wght@100..400&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 /*fonts*/
 @font-face {

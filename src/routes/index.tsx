@@ -3,11 +3,13 @@ import Main from '~/layouts/Main'
 import Home from '~/pages/Home'
 
 import { ReactNode } from 'react'
+import Auth from '~/pages/Auth'
 
 interface routesItem {
   path: string
   page: FC
-  layout: FC<{ children: ReactNode }>
+  layout?: FC<{ children: ReactNode }>
+  props?: (...args: any[]) => Record<string, any>
 }
 
 export const routes: routesItem[] = [
@@ -15,5 +17,14 @@ export const routes: routesItem[] = [
     path: '/home',
     page: Home,
     layout: Main
+  },
+  {
+    path: '/',
+    page: Auth
+  },
+  {
+    path: '/i/flow/signup',
+    page: Auth,
+    props: showSignupPopup => ({ showSignupPopup })
   }
 ]
