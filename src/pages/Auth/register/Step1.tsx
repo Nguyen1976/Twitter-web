@@ -1,49 +1,40 @@
-import React from 'react'
 import { useForm } from 'react-hook-form'
-import { checkEmailExistsAPI, checkUsernameExistsAPI } from '~/apis'
-import { useDebounceFn } from '~/customHooks/useDebounceFn'
+import {
+  EMAIL_RULE,
+  EMAIL_RULE_MESSAGE,
+  FIELD_REQUIRED_MESSAGE,
+  NAME_RULE,
+  NAME_RULE_MESSAGE
+} from '~/utils/validators'
 
 export default function Step1() {
   const {
     register,
     handleSubmit,
-    setError,
-    clearErrors,
     formState: { errors }
   } = useForm()
 
-  //check email exists
-  const checkEmailExists = async (email: string) => {
-    //call api to check if email exists
-    console.log('Checking if email exists:', email)
-    const response = (await checkEmailExistsAPI(email)) as { data: boolean }
-    if (response.data) {
-      setError('email', {
-        type: 'manual',
-        message: 'Email đã tồn tại'
-      })
-    } else {
-      clearErrors('email')
-    }
-  }
-  const debouncedCheckEmailExists = useDebounceFn(checkEmailExists, 500)
+  const validateDateInput = (value: string) => {
+    const today = new Date()
+    const selectedDate = new Date(value)
+    const age = today.getFullYear() - selectedDate.getFullYear()
+    const monthDiff = today.getMonth() - selectedDate.getMonth()
+    const dayDiff = today.getDate() - selectedDate.getDate()
 
-  const checkUsernameExists = async (username: string) => {
-    const response = (await checkUsernameExistsAPI(username)) as { data: boolean }
-    if (response.data) {
-      setError('username', {
-        type: 'manual',
-        message: 'Username đã tồn tại'
-      })
-    } else {
-      clearErrors('username')
+    if (selectedDate > today) {
+      return 'Ngày sinh không được lớn hơn ngày hiện tại'
     }
+
+    if (age < 13 || (age === 13 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)))) {
+      return 'Bạn phải đủ 13 tuổi trở lên'
+    }
+
+    return true
   }
-  const debouncedCheckUsernameExists = useDebounceFn(checkUsernameExists, 500)
 
   const submitRegister = (data: any) => {
     // Handle registration logic here
-    console.log(`Name: ${data.name}, Email: ${data.email}, Birthdate: ${data.birthdate}`)
+    console.log(`Name: ${data.username}, Email: ${data.email}, Birthdate: ${new Date(data.birthdate)}`)
     //config redux
   }
 
@@ -55,10 +46,13 @@ export default function Step1() {
           type='text'
           placeholder='Tên'
           className='w-full outline-none bg-transparent border border-1 border-zinc-300 rounded-md p-2 dark:text-white text-black h-14 mt-5'
-          {...register('username', { required: 'Tên là bắt buộc' })}
-          onChange={(e) => {
-            debouncedCheckUsernameExists(e.target.value)
-          }}
+          {...register('username', {
+            required: FIELD_REQUIRED_MESSAGE,
+            pattern: {
+              value: NAME_RULE,
+              message: NAME_RULE_MESSAGE
+            }
+          })}
         />
         {/* Error */}
         <p className='text-red-500 text-sm mt-1 ml-1'>{errors?.username?.message as string}</p>
@@ -68,10 +62,13 @@ export default function Step1() {
           type='email'
           placeholder='Email'
           className='w-full outline-none bg-transparent border border-1 border-zinc-300 rounded-md p-2 dark:text-white text-black h-14 mt-5'
-          {...register('email', { required: 'Email là bắt buộc' })}
-          onChange={(e) => {
-            debouncedCheckEmailExists(e.target.value)
-          }}
+          {...register('email', {
+            required: FIELD_REQUIRED_MESSAGE,
+            pattern: {
+              value: EMAIL_RULE,
+              message: EMAIL_RULE_MESSAGE
+            }
+          })}
         />
         {/* Error */}
         <p className='text-red-500 text-sm mt-1 ml-1'>{errors?.email?.message as string}</p>
@@ -89,7 +86,7 @@ export default function Step1() {
         <input
           type='date'
           className='w-full outline-none bg-transparent border border-1 border-zinc-300 rounded-md p-2 dark:text-white text-black h-14 mt-5'
-          {...register('birthdate', { required: 'Ngày sinh là bắt buộc' })}
+          {...register('birthdate', { required: 'Ngày sinh là bắt buộc', validate: validateDateInput })}
         />
         {/* Error */}
         <p className='text-red-500 text-sm mt-1 ml-1'>{errors?.birthdate?.message as string}</p>
