@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import GoogleLoginButton from './GoogleLoginButton'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { SignupPopup } from './SignupPopup'
+import { SignupPopup } from './register/SignupPopup'
 
 type AuthProps = {
   showSignupPopup?: boolean

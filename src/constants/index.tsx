@@ -372,3 +372,7 @@ export const OPTION_TABS = {
   FOR_YOU: 'Foryou',
   FOLLOWING: 'Following'
 } as const
+
+export const config = {
+  API_ROOT: import.meta.env.VITE_API_ROOT,
+}
