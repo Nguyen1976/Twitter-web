@@ -7,8 +7,11 @@ type SignupModalProps = {
   onClose: () => void
 }
 
+
 export function SignupPopup({ onClose }: SignupModalProps) {
   const [step, setStep] = useState<number>(1)
+
+  
 
   return (
     <>
@@ -23,19 +26,13 @@ export function SignupPopup({ onClose }: SignupModalProps) {
             </button>
           </div>
 
-          {step === 1 && (
-            <Step1 />
-          )}
+          {step === 1 && <Step1 setStep={setStep} />}
 
           {step === 2 && (
             <div>
               <h2 className='text-white text-lg font-bold mb-2'>Verify your email</h2>
               <p className='text-gray-400 mb-4'>A verification link has been sent to your email.</p>
-              <button
-                type='button'
-                className='w-full bg-blue-500 text-white p-2 rounded-md'
-                onClick={onClose}
-              >
+              <button type='button' className='w-full bg-blue-500 text-white p-2 rounded-md' onClick={onClose}>
                 Close
               </button>
             </div>

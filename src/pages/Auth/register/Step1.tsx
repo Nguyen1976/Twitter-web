@@ -1,4 +1,7 @@
 import { useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '~/redux/store'
+import { setUser } from '~/redux/user/userSlice'
 import {
   EMAIL_RULE,
   EMAIL_RULE_MESSAGE,
@@ -7,12 +10,18 @@ import {
   NAME_RULE_MESSAGE
 } from '~/utils/validators'
 
-export default function Step1() {
+interface Step1Props {
+  setStep: (step: number) => void
+}
+
+export default function Step1({ setStep }: Step1Props) {
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm()
+
+  const dispatch = useDispatch<AppDispatch>()
 
   const validateDateInput = (value: string) => {
     const today = new Date()
@@ -33,9 +42,14 @@ export default function Step1() {
   }
 
   const submitRegister = (data: any) => {
-    // Handle registration logic here
-    console.log(`Name: ${data.username}, Email: ${data.email}, Birthdate: ${new Date(data.birthdate)}`)
-    //config redux
+    //Bắn dữ liệu lên redux ở đây
+    dispatch(
+      setUser({
+        ...data,
+        birthdate: new Date(data.birthdate)
+      })
+    )
+    setStep(2)
   }
 
   return (
