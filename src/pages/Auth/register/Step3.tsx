@@ -1,49 +1,54 @@
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { set } from 'lodash'
-import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { data, useNavigate } from 'react-router-dom'
-import { registerAPI, RegisterData, sendVerificationEmailAPI, verifyEmailAPI } from '~/apis'
+import { useNavigate } from 'react-router-dom'
+import { registerAPI } from '~/apis'
 import { AppDispatch } from '~/redux/store'
 import { selectUser, setUser } from '~/redux/user/userSlice'
+import { RegisterData } from '~/types'
 import { FIELD_REQUIRED_MESSAGE, PASSWORD_RULE, PASSWORD_RULE_MESSAGE } from '~/utils/validators'
 
 interface Step3Props {
   setStep: (step: number) => void
-  onClose: () => void
 }
 
-export default function Step3({ setStep, onClose }: Step3Props) {
+type FromData = {
+  password: string
+}
+
+export default function Step3({ setStep }: Step3Props) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    setError,
-    clearErrors
-  } = useForm()
+    formState: { errors }
+  } = useForm<FromData>()
 
   const user = useSelector(selectUser)
   const dispatch = useDispatch<AppDispatch>()
 
   const navigate = useNavigate()
 
-  const submitRegister = async (value: any) => {
-    const registerData: RegisterData = {
-      username: user.username as string,
-      email: user.email as string,
-      birthDate: user.birthDate as string,
-      password: value.password as string
-    }
-
-    const response = await registerAPI(registerData) as { success: boolean, data: string }
-    if (response.success) {
-      dispatch(setUser({ ...user, id: response.data })) 
-      navigate('/home')
+  const submitRegister = async (value: FromData) => {
+    if (!user.username || !user.email || !user.birthDate) {
+      // Nếu không có thông tin người dùng, chuyển về bước 1
+      setStep(1)
+      return
     } else {
-      // Xử lý lỗi đăng ký
-      console.error('Đăng ký không thành công')
+      const registerData: RegisterData = {
+        username: user.username,
+        email: user.email,
+        birthDate: user.birthDate,
+        password: value.password
+      }
+      const response = (await registerAPI(registerData))
+      if (response.success) {
+        dispatch(setUser({ ...user, id: response.data }))
+        navigate('/home')
+      } else {
+        // Xử lý lỗi đăng ký
+        console.error('Đăng ký không thành công')
+      }
     }
   }
 
@@ -75,7 +80,7 @@ export default function Step3({ setStep, onClose }: Step3Props) {
               })}
             />
             {/* Error */}
-            <span className='text-red-500 text-sm mt-1 ml-1'>{errors?.otp?.message as string}</span>
+            <span className='text-red-500 text-sm mt-1 ml-1'>{errors?.password?.message as string}</span>
           </p>
           {/* Bước tiếp theo */}
           <button

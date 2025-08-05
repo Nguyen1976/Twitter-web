@@ -1,27 +1,28 @@
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { set } from 'lodash'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
-import { data } from 'react-router-dom'
 import { sendVerificationEmailAPI, verifyEmailAPI } from '~/apis'
 import { selectUser } from '~/redux/user/userSlice'
 import { FIELD_REQUIRED_MESSAGE } from '~/utils/validators'
 
 interface Step2Props {
   setStep: (step: number) => void
-  onClose: () => void
 }
 
-export default function Step2({ setStep, onClose }: Step2Props) {
+type FromData = {
+  otp: string
+}
+
+export default function Step2({ setStep }: Step2Props) {
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError,
     clearErrors
-  } = useForm()
+  } = useForm<FromData>()
 
   const user = useSelector(selectUser)
 
@@ -51,16 +52,16 @@ export default function Step2({ setStep, onClose }: Step2Props) {
   }, [createdAtOtp])
 
   const fetchVerificationEmail = async () => {
-    const response = await sendVerificationEmailAPI(user.email as string, user.username as string)
-    const data = (response as { data: { createdAt: number } }).data
+    const { data } = await sendVerificationEmailAPI(user.email, user.username)
+
     setCreatedAtOtp(data.createdAt)
   }
   useEffect(() => {
     fetchVerificationEmail()
   }, [])
 
-  const submitRegister = async (value: any) => {
-    const response = (await verifyEmailAPI(user.email as string, value.otp as string)) as { data: boolean }
+  const submitRegister = async (value: FromData) => {
+    const response = await verifyEmailAPI(user.email, value.otp)
 
     if (response.data) {
       clearErrors('otp')
