@@ -1,5 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../store'
+import axios from 'axios'
+import { config } from '~/constants'
+import { loginResponse } from '~/types/apis'
 
 interface UserState {
   id: string
@@ -12,8 +15,17 @@ const intialState: UserState = {
   id: '',
   username: '',
   email: '',
-  birthDate: '',
+  birthDate: ''
 }
+
+export const loginUserAPI = createAsyncThunk(
+  'user/login',
+  async (payload: { email: string; password: string }): Promise<loginResponse> => {
+    const { email, password } = payload
+    const response = await axios.post(`${config.API_ROOT}/auth/login`, { email, password })
+    return response.data as loginResponse
+  }
+)
 
 export const userSlice = createSlice({
   name: 'user',
@@ -24,6 +36,19 @@ export const userSlice = createSlice({
       state = { ...state, ...payload }
       return state
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(loginUserAPI.fulfilled, (state, action) => {
+      const { success, data } = action.payload
+      if (success) {
+        state = { ...state, ...data.user }
+        localStorage.setItem('accessToken', data.accessToken)
+        localStorage.setItem('refreshToken', data.refreshToken)
+        return state
+      } else {
+        console.error('Login failed')
+      }
+    })
   }
 })
 

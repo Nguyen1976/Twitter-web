@@ -1,31 +1,43 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import GoogleLoginButton from './GoogleLoginButton'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { SignupPopup } from './register/SignupPopup'
+import SignInPopup from './signin/SignInPopup'
 
 type AuthProps = {
   showSignupPopup?: boolean
+  showSigninPopup?: boolean
 }
 
-const Auth = ({ showSignupPopup = false }: AuthProps) => {
+const Auth = ({ showSignupPopup = false, showSigninPopup = false }: AuthProps) => {
   const [isOpenSignupPopup, setIsOpenSignupPopup] = useState(false)
+  const [isOpenSigninPopup, setIsOpenSigninPopup] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
 
   useEffect(() => {
     if (showSignupPopup || location.pathname === '/i/flow/signup') {
       setIsOpenSignupPopup(true)
+    } else {
+      setIsOpenSignupPopup(false)
     }
-  }, [showSignupPopup, location])
+    if (showSigninPopup || location.pathname === '/i/flow/signin') {
+      setIsOpenSigninPopup(true)
+    } else {
+      setIsOpenSigninPopup(false)
+    }
+  }, [showSignupPopup, showSigninPopup, location])
 
   const handleClose = () => {
     setIsOpenSignupPopup(false)
+    setIsOpenSigninPopup(false)
     navigate('/')
   }
 
   return (
     <>
       {isOpenSignupPopup && <SignupPopup onClose={handleClose} />}
+      {isOpenSigninPopup && <SignInPopup onClose={handleClose} />}
       <div className='bg-white dark:bg-black'>
         <div className='flex items-center h-screen gap-10'>
           <div className='w-1/2 flex justify-center items-center'>
@@ -60,7 +72,10 @@ const Auth = ({ showSignupPopup = false }: AuthProps) => {
                 <p className='dark:text-white'>HOẶC</p>
                 <div className='h-[1px] bg-zinc-400 w-full ml-2'></div>
               </div>
-              <button className='bg-blue-500 text-white py-2 px-4 rounded-full w-full mt-5 font-semibold hover:bg-blue-600' onClick={() => navigate('/i/flow/signup')}>
+              <button
+                className='bg-blue-500 text-white py-2 px-4 rounded-full w-full mt-5 font-semibold hover:bg-blue-600'
+                onClick={() => navigate('/i/flow/signup')}
+              >
                 Tạo tài khoản
               </button>
 
@@ -83,7 +98,10 @@ const Auth = ({ showSignupPopup = false }: AuthProps) => {
 
               {/* Đã có tài khoản */}
               <p className='font-bold mt-12 text-lg dark:text-white'>Đã có tài khoản?</p>
-              <button className='bg-transparent text-black py-2 px-4 rounded-full w-full mt-5 font-semibold border border-1 border-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white dark:border-gray-600'>
+              <button
+                className='bg-transparent text-black py-2 px-4 rounded-full w-full mt-5 font-semibold border border-1 border-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white dark:border-gray-600'
+                onClick={() => navigate('/i/flow/signin')}
+              >
                 Đăng nhập
               </button>
             </div>
