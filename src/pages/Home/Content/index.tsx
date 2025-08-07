@@ -15,7 +15,7 @@ const Content = () => {
    */
 
   return (
-    <div className='border-[1px]'>
+    <div className='border-[1px] dark:border-zinc-800'>
       {/* Tabs */}
       <Tabs tab={tab} setTab={setTab} />
       <Publish />

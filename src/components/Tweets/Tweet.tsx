@@ -27,7 +27,7 @@ const tweet = {
 
 const Tweet = () => {
   return (
-    <div className='w-full p-3 cursor-pointer border-t-[1px]'>
+    <div className='w-full p-3 cursor-pointer border-t-[1px] dark:border-zinc-800 dark:text-white'>
       <div className='flex gap-2'>
         <div className='flex items-start'>
           <Avatar

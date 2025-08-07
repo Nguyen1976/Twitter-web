@@ -4,6 +4,7 @@ import Home from '~/pages/Home'
 
 import { ReactNode } from 'react'
 import Auth from '~/pages/Auth'
+import Profile from '~/pages/Profile'
 
 interface routesItem {
   path: string
@@ -26,5 +27,21 @@ export const routes: routesItem[] = [
     path: '/i/flow/signup',
     page: Auth,
     props: showSignupPopup => ({ showSignupPopup })
+  },
+  {
+    path: '/i/flow/signin',
+    page: Auth,
+    props: showSigninPopup => ({ showSigninPopup })
+  },
+  {
+    path: '/:userId',
+    page: Profile,
+    layout: Main
+  },
+  {
+    path: '/settings/profile',
+    page: Home,
+    layout: Main,
+    props: userId => ({ userId })
   }
 ]

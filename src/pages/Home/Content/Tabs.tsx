@@ -15,12 +15,12 @@ const Tabs: React.FC<TabsProps> = ({ tab, setTab }) => {
     setTab(OPTION_TABS.FOLLOWING)
   }
   return (
-    <div className='bg-[#ffffffd9] backdrop-blur-md sticky top-0 z-10'>
+    <div className='bg-[#ffffffd9] backdrop-blur-md sticky top-0 z-10 dark:bg-black'>
       {/* Tablist */}
-      <div className='flex justify-center items-center border-b-[1px] transition-all'>
+      <div className='flex justify-center items-center border-b-[1px] transition-all dark:border-zinc-800'>
         <div
-          className={`py-4 w-1/2 hover:bg-zinc-200 transition-all relative ${
-            tab === OPTION_TABS.FOR_YOU ? 'font-semibold' : 'text-zinc-600 font-semibold'
+          className={`py-4 w-1/2 hover:bg-zinc-200 transition-all relative dark:hover:bg-zinc-800 ${
+            tab === OPTION_TABS.FOR_YOU ? 'font-semibold dark:text-white' : 'text-zinc-600 font-semibold'
           }`}
           onClick={setTabForyou}
         >
@@ -30,8 +30,8 @@ const Tabs: React.FC<TabsProps> = ({ tab, setTab }) => {
           )}
         </div>
         <div
-          className={`py-4 w-1/2 hover:bg-zinc-200 transition-all relative ${
-            tab === OPTION_TABS.FOLLOWING ? 'font-semibold' : 'text-zinc-600 font-semibold'
+          className={`py-4 w-1/2 hover:bg-zinc-200 transition-all relative dark:hover:bg-zinc-800 ${
+            tab === OPTION_TABS.FOLLOWING ? 'font-semibold dark:text-white' : 'text-zinc-600 font-semibold'
           }`}
           onClick={setTabFollowing}
         >

@@ -4,30 +4,52 @@ import { dropDownItemMore, optionNavBar } from '~/constants/index'
 import { Avatar, Dropdown, DropdownItem } from 'flowbite-react'
 import Button from '~/components/Button'
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
+import { useSelector } from 'react-redux'
+import { selectUser } from '~/redux/user/userSlice'
 
 const Header = () => {
   const location = useLocation()
   const pathName = location.pathname
+  let user = useSelector(selectUser)
 
   return (
     <header className='fixed top-0 bottom-0 overflow-y-auto custom-scrollbar flex flex-col justify-between mb-7 h-screen py-4'>
       <div className='h-header py-2 flex justify-start items-center'>
-        <div className='p-2 rounded-full hover:bg-zinc-300'>
-          <img className='h-logo' src='src/assets/twitter.png' alt='' />
+        <div className='text-white text-center'>
+          <img
+            className='light:hidden dark:block'
+            width='35'
+            height='35'
+            src='https://img.icons8.com/ios/50/FFFFFF/twitterx--v2.png'
+            alt='twitterx--v2'
+          />
+          <img
+            className='light:block dark:hidden'
+            width='50'
+            height='50'
+            src='https://img.icons8.com/ios-filled/50/1A1A1A/twitterx--v2.png'
+            alt='twitterx--v2'
+          />
         </div>
       </div>
 
       <nav className='flex flex-col gap-3'>
-        {optionNavBar.map((option) => (
-          <Link to={option.pathName || '/'} key={option.textButton}>
-            <ButtonIcon
-              isActive={option.pathName === pathName}
-              iconButton={option.iconButton}
-              iconButtonActive={option.iconButtonActive}
-              textButton={option.textButton}
-            />
-          </Link>
-        ))}
+        {optionNavBar.map((option) => {
+          let pathname = option.pathName //vì tragn profile là trường hợp đặc biệt có dạng param lên phải xử lý thêm
+          if (option.pathName === '/profile') {
+            pathname = `/${user.username}`
+          }
+          return (
+            <Link to={pathname || '/home'} key={option.textButton}>
+              <ButtonIcon
+                isActive={pathname === pathName}
+                iconButton={option.iconButton}
+                iconButtonActive={option.iconButtonActive}
+                textButton={option.textButton}
+              />
+            </Link>
+          )
+        })}
         <Dropdown
           className='w-max !fixed z-1'
           placement='top-start'
@@ -81,10 +103,10 @@ const Header = () => {
         {/* <Avatar img='/src/assets/twitter.png' alt='avatar of Jese' rounded /> */}
         <Avatar className='mr-3 xl:mr-0' rounded />
         <div className='xl:flex flex-col items-center justify-center hidden'>
-          <p className='font-bold'>Nguyen Nguyen</p>
+          <p className='font-bold dark:text-white'>Nguyen Nguyen</p>
           <p className='text-sm text-zinc-500'>@shouta9271</p>
         </div>
-        <AdjustmentsHorizontalIcon className='h-6 w-6 text-black hidden xl:block' />
+        <AdjustmentsHorizontalIcon className='h-6 w-6 text-black hidden xl:block dark:text-white' />
       </div>
     </header>
   )

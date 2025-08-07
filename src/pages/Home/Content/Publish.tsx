@@ -9,15 +9,17 @@ import { faCalendar, faFaceSmile } from '@fortawesome/free-regular-svg-icons'
 const Publish = () => {
   const [content, setContent] = useState<string>('')
   return (
-    <div className='flex gap-3 p-3 border-b-[1px]'>
+    <div className='flex gap-3 p-3 border-b-[1px] dark:border-zinc-800'>
       <Avatar rounded className='flex items-start' />
       <div className='flex-1'>
-        <div className='border-b-[1px] pb-4 mb-4'>
+        <div className='border-b-[1px] dark:border-zinc-800 pb-4 mb-4'>
           {/* <input type='text' placeholder="What's happening?" className='border-none outline-none text-xl w-full mt-1' /> */}
           <TextareaAutosize
+            placeholder="What's happening?"
             maxRows={17}
             onChange={(e) => setContent(e.target.value)}
-            className='border-none outline-none text-xl w-full mt-1 resize-none'
+            value={content}
+            className='border-none outline-none text-xl w-full mt-1 resize-none dark:bg-black dark:text-white'
           />
           <div className='flex items-center gap-1 text-sm font-bold text-blue-500 mt-3'>
             <FontAwesomeIcon icon={faEarthAmericas} />
