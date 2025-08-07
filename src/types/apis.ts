@@ -22,3 +22,18 @@ export type VerifyEmailResponse = {
   success: boolean
   data: boolean // true if verification is successful, false otherwise
 }
+
+export type loginResponse = {
+  status(arg0: string, status: any): unknown
+  success: boolean
+  data: {
+    accessToken: string
+    refreshToken: string
+    user: {
+      id: string
+      username: string
+      email: string
+      birthDate: string
+    }
+  }
+}
