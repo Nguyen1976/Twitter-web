@@ -5,6 +5,7 @@ import Home from '~/pages/Home'
 import { ReactNode } from 'react'
 import Auth from '~/pages/Auth'
 import Profile from '~/pages/Profile'
+import MainSideBar from '~/layouts/Main/MainSideBar'
 
 interface routesItem {
   path: string
@@ -17,7 +18,7 @@ export const routes: routesItem[] = [
   {
     path: '/home',
     page: Home,
-    layout: Main
+    layout: MainSideBar
   },
   {
     path: '/',
@@ -36,12 +37,12 @@ export const routes: routesItem[] = [
   {
     path: '/:userId',
     page: Profile,
-    layout: Main
+    layout: MainSideBar
   },
   {
     path: '/settings/profile',
     page: Home,
-    layout: Main,
+    layout: MainSideBar,
     props: userId => ({ userId })
   }
 ]
