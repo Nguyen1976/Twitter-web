@@ -1,9 +1,24 @@
 import { faArrowLeft, faCalendarDays, faLock, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { getUserProfileAPI } from '~/apis'
+import { AppDispatch } from '~/redux/store'
 
 export default function Profile() {
+  const [userProfile, setUserProfile] = useState<any>(null)
   let userId = useParams<{ userId: string }>().userId
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (!userId) return
+      const userProfileRes = await getUserProfileAPI(userId)
+      setUserProfile(userProfileRes.data)
+    }
+    fetchUserProfile()
+  }, [userId])
+
   return (
     <>
       {/* Head */}
@@ -13,7 +28,7 @@ export default function Profile() {
             <FontAwesomeIcon icon={faArrowLeft} />
             <div className='items-start flex flex-col'>
               <div className='flex items-center gap-4'>
-                <p className='font-bold text-xl'>Nguyen Nguyen</p>
+                <p className='font-bold text-xl'>{userProfile?.displayName ?? userProfile?.username ?? ''}</p>
                 <FontAwesomeIcon icon={faLock} />
               </div>
               <p className='text-sm text-zinc-600'>0 post</p>
@@ -40,25 +55,25 @@ export default function Profile() {
         <div className='mt-5 px-5'>
           <div className='items-start flex flex-col dark:text-white'>
             <div className='flex items-center gap-4'>
-              <p className='font-bold text-xl'>Nguyen Nguyen</p>
+              <p className='font-bold text-xl'>{userProfile?.displayName ?? userProfile?.username ?? ''}</p>
               <FontAwesomeIcon icon={faLock} />
             </div>
-            <p className='text-sm text-zinc-600'>@shouta9271</p>
+            <p className='text-sm text-zinc-600'>@{userProfile?.username ?? ''}</p>
             {/* bio */}
-            <div className='mt-2'>React Developer | Dream in code, live in pixels.</div>
+            <div className='mt-2'>{userProfile?.bio ?? ''}</div>
             {/* created-at */}
             <div className='text-zinc-600 flex items-center gap-2 mt-3'>
               <FontAwesomeIcon icon={faCalendarDays} />
-              <p>Joined June 2022</p>
+              <p>Joined {new Date(userProfile?.createdAt).toLocaleDateString() ?? ''}</p>
             </div>
             {/* Flow */}
             <div className='flex items-center gap-5 mt-2'>
               <div className='flex items-center gap-2'>
-                <p>8</p>
+                <p>{userProfile?.followingCount ?? 0}</p>
                 <p className='text-zinc-600'>Following</p>
               </div>
               <div className='flex items-center gap-2'>
-                <p>2</p>
+                <p>{userProfile?.followerCount ?? 0}</p>
                 <p className='text-zinc-600'>Followers</p>
               </div>
             </div>

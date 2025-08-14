@@ -11,7 +11,8 @@ import GoogleLoginButton from '../GoogleLoginButton'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '~/redux/store'
-import { loginUserAPI } from '~/redux/user/userSlice'
+import { loginUserAPI, setUser } from '~/redux/user/userSlice'
+import { getUserProfileAPI } from '~/apis'
 
 type FromData = {
   email: string
@@ -32,13 +33,16 @@ export default function SignInPopup({ onClose }: { onClose: () => void }) {
 
   const submitLogin = async (data: FromData) => {
     try {
-        await dispatch(loginUserAPI(data)).unwrap()
-        navigate('/home')
+      const response = await dispatch(loginUserAPI(data)).unwrap()
+      const userProfileRes = await getUserProfileAPI(response.data.id)
+      dispatch(setUser(userProfileRes.data))
+      navigate('/home')
     } catch (error) {
-        setError('email', {
-          type: 'manual',
-          message: 'Đăng nhập thất bại. Vui lòng kiểm tra lại email và mật khẩu.'
-        })
+      console.error('Login failed:', error)
+      setError('email', {
+        type: 'manual',
+        message: 'Đăng nhập thất bại. Vui lòng kiểm tra lại email và mật khẩu.'
+      })
     }
   }
   return (

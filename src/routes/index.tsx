@@ -16,23 +16,26 @@ interface routesItem {
 
 export const routes: routesItem[] = [
   {
-    path: '/home',
-    page: Home,
-    layout: MainSideBar
-  },
-  {
     path: '/',
     page: Auth
   },
   {
     path: '/i/flow/signup',
     page: Auth,
-    props: showSignupPopup => ({ showSignupPopup })
+    props: (showSignupPopup) => ({ showSignupPopup })
   },
   {
     path: '/i/flow/signin',
     page: Auth,
-    props: showSigninPopup => ({ showSigninPopup })
+    props: (showSigninPopup) => ({ showSigninPopup })
+  }
+]
+
+export const protectedRoutes: routesItem[] = [
+  {
+    path: '/home',
+    page: Home,
+    layout: MainSideBar
   },
   {
     path: '/:userId',
@@ -43,6 +46,6 @@ export const routes: routesItem[] = [
     path: '/settings/profile',
     page: Home,
     layout: MainSideBar,
-    props: userId => ({ userId })
+    props: (userId) => ({ userId })
   }
 ]

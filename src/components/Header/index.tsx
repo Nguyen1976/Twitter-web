@@ -37,7 +37,7 @@ const Header = () => {
         {optionNavBar.map((option) => {
           let pathname = option.pathName //vì tragn profile là trường hợp đặc biệt có dạng param lên phải xử lý thêm
           if (option.pathName === '/profile') {
-            pathname = `/${user.username}`
+            pathname = `/${user.userId}`
           }
           return (
             <Link to={pathname || '/home'} key={option.textButton}>
@@ -94,7 +94,12 @@ const Header = () => {
           <Button text={'Post'} large={true} />
         </div>
         <p className='w-12 h-12 flex items-center justify-center bg-black rounded-full xl:hidden'>
-          <img width='35' height='35' src='https://img.icons8.com/sf-regular/48/FFFFFF/leaf.png' alt='leaf' />
+          <img
+            width='35'
+            height='35'
+            src={`${user.avatarUrl ? user.avatarUrl : 'https://img.icons8.com/sf-regular/48/FFFFFF/leaf.png'}`}
+            alt='leaf'
+          />
         </p>
       </div>
 
@@ -103,8 +108,8 @@ const Header = () => {
         {/* <Avatar img='/src/assets/twitter.png' alt='avatar of Jese' rounded /> */}
         <Avatar className='mr-3 xl:mr-0' rounded />
         <div className='xl:flex flex-col items-center justify-center hidden'>
-          <p className='font-bold dark:text-white'>Nguyen Nguyen</p>
-          <p className='text-sm text-zinc-500'>@shouta9271</p>
+          <p className='font-bold dark:text-white'>{user.displayName || user.username}</p>
+          <p className='text-sm text-zinc-500'>@{user.username}</p>
         </div>
         <AdjustmentsHorizontalIcon className='h-6 w-6 text-black hidden xl:block dark:text-white' />
       </div>

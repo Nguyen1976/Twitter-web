@@ -10,7 +10,6 @@ export type RegisterResponse = {
   data: string // user ID or other data
 }
 
-
 export type sendVerificationEmailResponse = {
   success: boolean
   data: {
@@ -27,13 +26,28 @@ export type loginResponse = {
   status(arg0: string, status: any): unknown
   success: boolean
   data: {
-    accessToken: string
-    refreshToken: string
-    user: {
-      id: string
-      username: string
-      email: string
-      birthDate: string
-    }
+    id: string
+    username: string
+    email: string
+    birthDate: string
+  }
+}
+export type getUserResponse = {
+  success: boolean
+  data: {
+    id: string
+    username: string
+    email: string
+    birthDate: string
+    displayName: string
+    bio: string
+    location: string
+    website: string
+    avatarUrl: string
+    headerImageUrl: string
+    followerCount: number
+    followingCount: number
+    createdAt: Date
+    updatedAt: Date
   }
 }

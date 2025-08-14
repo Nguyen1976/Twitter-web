@@ -1,31 +1,59 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import axios from 'axios'
 import { config } from '~/constants'
-import { loginResponse } from '~/types/apis'
+import { getUserResponse, loginResponse } from '~/types/apis'
+import authorizeAxiosInstance from '~/utils/authorizeAxiosInstance'
+import axios from 'axios'
 
 interface UserState {
   id: string
+  userId: string
   username: string
   email: string
   birthDate: string
+  displayName: string
+  bio: string
+  location: string
+  website: string
+  avatarUrl: string
+  headerImageUrl: string
+  followerCount: number
+  followingCount: number
+  createdAt?: Date
+  updatedAt?: Date
 }
 
 const intialState: UserState = {
   id: '',
+  userId: '',
   username: '',
   email: '',
-  birthDate: ''
+  birthDate: '',
+  displayName: '',
+  bio: '',
+  location: '',
+  website: '',
+  avatarUrl: '',
+  headerImageUrl: '',
+  followerCount: 0,
+  followingCount: 0,
+  createdAt: undefined,
+  updatedAt: undefined
 }
 
 export const loginUserAPI = createAsyncThunk(
   'user/login',
   async (payload: { email: string; password: string }): Promise<loginResponse> => {
     const { email, password } = payload
-    const response = await axios.post(`${config.API_ROOT}/auth/login`, { email, password })
+    const response = await authorizeAxiosInstance.post(`${config.API_ROOT}/auth/login`, { email, password })
     return response.data as loginResponse
   }
 )
+
+export const logoutUserAPI = createAsyncThunk('user/logoutUserAPI', async () => {
+  const response = await authorizeAxiosInstance.delete(`${config.API_ROOT}/auth/logout`)
+  return response.data
+})
 
 export const userSlice = createSlice({
   name: 'user',
@@ -41,18 +69,21 @@ export const userSlice = createSlice({
     builder.addCase(loginUserAPI.fulfilled, (state, action) => {
       const { success, data } = action.payload
       if (success) {
-        state = { ...state, ...data.user }
-        localStorage.setItem('accessToken', data.accessToken)
-        localStorage.setItem('refreshToken', data.refreshToken)
+        state = { ...state, ...data }
+        state.userId = data.id
         return state
       } else {
         console.error('Login failed')
       }
     })
+    builder.addCase(logoutUserAPI.fulfilled, (state) => {
+      state = { ...intialState }
+      return state
+    })
   }
 })
 
-export const selectUser = (state: RootState) => state.users
+export const selectUser = (state: RootState) => state.user
 
 export const { setUser } = userSlice.actions
 

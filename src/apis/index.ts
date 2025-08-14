@@ -1,25 +1,21 @@
 import axios from 'axios'
 import { config } from '~/constants'
-import { loginResponse, RegisterData, RegisterResponse, sendVerificationEmailResponse, VerifyEmailResponse } from '~/types'
+import {
+  getUserResponse,
+  loginResponse,
+  RegisterData,
+  RegisterResponse,
+  sendVerificationEmailResponse,
+  VerifyEmailResponse
+} from '~/types'
+import authorizeAxiosInstance from '~/utils/authorizeAxiosInstance'
 
-// export const checkEmailExistsAPI = async (email: string) => {
-//   const response = await axios.post(`${config.API_ROOT}/auth/check-email`, {
-//     email
-//   })
-//   return response.data
-// }
-// export const checkUsernameExistsAPI = async (username: string) => {
-//   const response = await axios.post(`${config.API_ROOT}/auth/check-username`, {
-//     username
-//   })
-//   return response.data
-// }
 
 export const sendVerificationEmailAPI = async (
   email: string,
   username: string
 ): Promise<sendVerificationEmailResponse> => {
-  const response = await axios.post(`${config.API_ROOT}/auth/send-verification`, {
+  const response = await authorizeAxiosInstance.post(`${config.API_ROOT}/auth/send-verification`, {
     email,
     username
   })
@@ -27,7 +23,7 @@ export const sendVerificationEmailAPI = async (
 }
 
 export const verifyEmailAPI = async (email: string, otp: string): Promise<VerifyEmailResponse> => {
-  const response = await axios.post(`${config.API_ROOT}/auth/verify-otp`, {
+  const response = await authorizeAxiosInstance.post(`${config.API_ROOT}/auth/verify-otp`, {
     email,
     otp
   })
@@ -35,16 +31,24 @@ export const verifyEmailAPI = async (email: string, otp: string): Promise<Verify
 }
 
 export const registerAPI = async (data: RegisterData): Promise<RegisterResponse> => {
-  const response = await axios.post(`${config.API_ROOT}/auth/register`, data)
+  const response = await authorizeAxiosInstance.post(`${config.API_ROOT}/auth/register`, data)
   return response.data as RegisterResponse
 }
 
-
-
 export const loginAPI = async (email: string, password: string): Promise<loginResponse> => {
-  const response = await axios.post(`${config.API_ROOT}/auth/login`, {
+  const response = await authorizeAxiosInstance.post(`${config.API_ROOT}/auth/login`, {
     email,
     password
   })
   return response.data as loginResponse
 }
+
+export const refreshTokenAPI = async (): Promise<{ accessToken: string }> => {
+  const response = await authorizeAxiosInstance.post(`${config.API_ROOT}/auth/refresh-token`)
+  return response.data as { accessToken: string }
+}
+
+export const getUserProfileAPI = async (userId: string): Promise<getUserResponse> => {
+  const response = await authorizeAxiosInstance.get(`${config.API_ROOT}/user/profile/${userId}`)
+  return response.data as getUserResponse
+} 
