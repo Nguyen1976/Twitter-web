@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import Popup from '~/components/Popup'
 import { AppDispatch } from '~/redux/store'
@@ -8,9 +8,11 @@ import {
   EMAIL_RULE,
   EMAIL_RULE_MESSAGE,
   FIELD_REQUIRED_MESSAGE,
-  NAME_RULE,
-  NAME_RULE_MESSAGE
+  USERNAME_RULE,
+  USERNAME_RULE_MESSAGE,
+  validateDateInput
 } from '~/utils/validators'
+import { Datepicker, FloatingLabel, HelperText } from 'flowbite-react'
 
 interface Step1Props {
   setStep: (step: number) => void
@@ -20,6 +22,7 @@ interface Step1Props {
 export default function Step1({ setStep, onClose }: Step1Props) {
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
     reset
@@ -36,23 +39,7 @@ export default function Step1({ setStep, onClose }: Step1Props) {
     })
   }, [dispatch]) //xử lý trong trường hợp khi quay lại từ step sau đó thì vẫn sẽ còn dữ liệu
 
-  const validateDateInput = (value: string) => {
-    const today = new Date()
-    const selectedDate = new Date(value)
-    const age = today.getFullYear() - selectedDate.getFullYear()
-    const monthDiff = today.getMonth() - selectedDate.getMonth()
-    const dayDiff = today.getDate() - selectedDate.getDate()
-
-    if (selectedDate > today) {
-      return 'Ngày sinh không được lớn hơn ngày hiện tại'
-    }
-
-    if (age < 13 || (age === 13 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)))) {
-      return 'Bạn phải đủ 13 tuổi trở lên'
-    }
-
-    return true
-  }
+  
 
   const submitRegister = (data: any) => {
     //Bắn dữ liệu lên redux ở đây
@@ -69,27 +56,27 @@ export default function Step1({ setStep, onClose }: Step1Props) {
     <Popup onNavigate={onClose} type='close'>
       <form className='px-8 pb-8' onSubmit={handleSubmit(submitRegister)}>
         <h2 className='text-2xl font-bold text-black dark:text-white'>Tạo tài khoản của bạn</h2>
-        <p>
-          <input
+        <div className='mt-5'>
+          <FloatingLabel
             type='text'
-            placeholder='Tên'
-            className='w-full outline-none bg-transparent border border-1 border-zinc-300 rounded-md p-2 dark:text-white text-black h-14 mt-5'
+            label='Tên'
+            variant='outlined'
             {...register('username', {
               required: FIELD_REQUIRED_MESSAGE,
               pattern: {
-                value: NAME_RULE,
-                message: NAME_RULE_MESSAGE
+                value: USERNAME_RULE,
+                message: USERNAME_RULE_MESSAGE
               }
             })}
           />
           {/* Error */}
-          <span className='text-red-500 text-sm mt-1 ml-1'>{errors?.username?.message as string}</span>
-        </p>
-        <p>
-          <input
+          <HelperText color='failure'>{errors?.username?.message as string}</HelperText>
+        </div>
+        <div className='mt-5'>
+          <FloatingLabel
             type='email'
-            placeholder='Email'
-            className='w-full outline-none bg-transparent border border-1 border-zinc-300 rounded-md p-2 dark:text-white text-black h-14 mt-5'
+            label='Email'
+            variant='outlined'
             {...register('email', {
               required: FIELD_REQUIRED_MESSAGE,
               pattern: {
@@ -99,9 +86,9 @@ export default function Step1({ setStep, onClose }: Step1Props) {
             })}
           />
           {/* Error */}
-          <span className='text-red-500 text-sm mt-1 ml-1'>{errors?.email?.message as string}</span>
-        </p>
-        <div className='dark:text-white mt-10'>
+          <HelperText color='failure'>{errors?.email?.message as string}</HelperText>
+        </div>
+        <div className='dark:text-white mt-5'>
           <h3 className='font-semibold text-md'>Ngày sinh</h3>
           <span className='text-sm text-gray-500 mt-1'>
             Điều này sẽ không được hiển thị công khai. Xác nhận tuổi của bạn, ngay cả khi tài khoản này dành cho doanh
@@ -110,15 +97,34 @@ export default function Step1({ setStep, onClose }: Step1Props) {
         </div>
 
         {/* Date */}
-        <p>
-          <input
-            type='date'
-            className='w-full outline-none bg-transparent border border-1 border-zinc-300 rounded-md p-2 dark:text-white text-black h-14 mt-5'
-            {...register('birthDate', { required: 'Ngày sinh là bắt buộc', validate: validateDateInput })}
+        <div className='mt-5'>
+          <Controller
+            name='birthDate'
+            control={control}
+            rules={{
+              required: 'Ngày sinh là bắt buộc',
+              validate: validateDateInput
+            }}
+            render={({ field }) => (
+              <Datepicker
+                {...field}
+                theme={{
+                  root: {
+                    input: {
+                      field: {
+                        input: {
+                          base: 'dark:!bg-black light:!bg-white'
+                        }
+                      }
+                    }
+                  }
+                }}
+              />
+            )}
           />
           {/* Error */}
-          <span className='text-red-500 text-sm mt-1 ml-1'>{errors?.birthDate?.message as string}</span>
-        </p>
+          <HelperText color='failure'>{errors?.birthDate?.message as string}</HelperText>
+        </div>
 
         {/* Bước tiếp theo */}
         <button

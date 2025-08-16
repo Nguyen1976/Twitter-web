@@ -44,8 +44,8 @@ export const protectedRoutes: routesItem[] = [
   },
   {
     path: '/settings/profile',
-    page: Home,
+    page: Profile,
     layout: MainSideBar,
-    props: (userId) => ({ userId })
+    props: (showEditPopup) => ({ showEditPopup })
   }
 ]

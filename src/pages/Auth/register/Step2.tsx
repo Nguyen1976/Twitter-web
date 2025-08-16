@@ -1,3 +1,4 @@
+import { FloatingLabel, HelperText } from 'flowbite-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
@@ -78,18 +79,18 @@ export default function Step2({ setStep }: Step2Props) {
       <form className='px-8 pb-8' onSubmit={handleSubmit(submitRegister)}>
         <h2 className='text-3xl font-bold text-black dark:text-white'>Chúng tôi đã gửi mã cho bạn</h2>
         <p className='text-sm text-gray-500 mt-3'>Nhập vào bên dưới để xác thực {user?.email}.</p>
-        <p>
-          <input
+        <div className='mt-5'>
+          <FloatingLabel
             type='text'
-            placeholder='Mã xác nhận'
-            className='w-full outline-none bg-transparent border border-1 border-zinc-300 rounded-md p-2 dark:text-white text-black h-14 mt-5'
+            label='Mã xác nhận'
+            variant='outlined'
             {...register('otp', {
               required: FIELD_REQUIRED_MESSAGE
             })}
           />
           {/* Error */}
-          <span className='text-red-500 text-sm mt-1 ml-1'>{errors?.otp?.message as string}</span>
-        </p>
+          <HelperText color='failure'>{errors?.otp?.message as string}</HelperText>
+        </div>
         <p className='text-sm text-gray-500 mt-1'>
           Bạn có thể gửi lại mã sau {remainingTime} giây.{' '}
           <span

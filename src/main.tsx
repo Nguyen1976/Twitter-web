@@ -9,18 +9,21 @@ import { store } from './redux/store.ts'
 import { injectStore } from './utils/authorizeAxiosInstance'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistStore } from 'redux-persist'
+import { ThemeProvider } from 'flowbite-react'
+import { customTheme } from './themes/index.ts'
 injectStore(store)
 
 // const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
-let persistor = persistStore(store);
-
+let persistor = persistStore(store)
 
 createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
-     <PersistGate loading={null} persistor={persistor}>
-      <GoogleOAuthProvider clientId={'clientId'}>
-        <App />
-      </GoogleOAuthProvider>
-     </PersistGate>
+    <PersistGate loading={null} persistor={persistor}>
+      <ThemeProvider theme={customTheme}>
+        <GoogleOAuthProvider clientId={'clientId'}>
+          <App />
+        </GoogleOAuthProvider>
+      </ThemeProvider>
+    </PersistGate>
   </Provider>
 )

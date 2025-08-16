@@ -1,3 +1,4 @@
+import { FloatingLabel, HelperText } from 'flowbite-react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -56,11 +57,11 @@ export default function Step3({ setStep }: Step3Props) {
       <form className='px-8 pb-8' onSubmit={handleSubmit(submitRegister)}>
         <h2 className='text-3xl font-bold text-black dark:text-white'>Bạn sẽ cần có mật khẩu</h2>
         <p className='text-sm text-gray-500 mt-3'>Đảm bảo mật khẩu có 8 ký tự trở lên.</p>
-        <p>
-          <input
+        <div className='mt-5'>
+          <FloatingLabel
             type='password'
-            placeholder='Mật khẩu'
-            className='w-full outline-none bg-transparent border border-1 border-zinc-300 rounded-md p-2 dark:text-white text-black h-14 mt-5'
+            label='Mật khẩu'
+            variant='outlined'
             {...register('password', {
               required: FIELD_REQUIRED_MESSAGE,
               pattern: {
@@ -70,8 +71,8 @@ export default function Step3({ setStep }: Step3Props) {
             })}
           />
           {/* Error */}
-          <span className='text-red-500 text-sm mt-1 ml-1'>{errors?.password?.message as string}</span>
-        </p>
+          <HelperText color='failure'>{errors?.password?.message as string}</HelperText>
+        </div>
         {/* Bước tiếp theo */}
         <button
           type='submit'

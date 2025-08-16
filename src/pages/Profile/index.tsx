@@ -1,13 +1,20 @@
 import { faArrowLeft, faCalendarDays, faLock, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { getUserProfileAPI } from '~/apis'
-import { AppDispatch } from '~/redux/store'
+import EditProfile from './EditProfile'
 
-export default function Profile() {
+type ProfileProps = {
+  showEditPopup?: boolean
+}
+
+export default function Profile({ showEditPopup = false }: ProfileProps) {
   const [userProfile, setUserProfile] = useState<any>(null)
+  const [isOpenEditPopup, setIsOpenEditPopup] = useState<boolean>(showEditPopup)
+  const location = useLocation()
+  const navigate = useNavigate()
+
   let userId = useParams<{ userId: string }>().userId
 
   useEffect(() => {
@@ -19,8 +26,23 @@ export default function Profile() {
     fetchUserProfile()
   }, [userId])
 
+  useEffect(() => {
+    if (showEditPopup || location.pathname === '/settings/profile') {
+      setIsOpenEditPopup(true)
+    } else {
+      setIsOpenEditPopup(false)
+    }
+  }, [location.pathname])
+
+  const handleClose = () => {
+    setIsOpenEditPopup(false)
+    navigate(-1)
+  }
+
   return (
     <>
+      {isOpenEditPopup && <EditProfile onClose={handleClose} />}
+
       {/* Head */}
       <div className='w-full z-10 sticky top-0 bg-[#000000a6] border-[1px] dark:border-zinc-800 dark:text-white'>
         <div className='flex items-center justify-between py-1 px-4'>
@@ -46,7 +68,10 @@ export default function Profile() {
           <div className='h-36 w-36 rounded-full overflow-hidden absolute -top-[72px] left-6 border-4 border-black'>
             <img src='https://pbs.twimg.com/profile_images/1541985856071667713/9VYgARp-_400x400.png' alt='' />
           </div>
-          <button className='rounded-full px-4 py-1 border-[1px] border-zinc-500 dark:text-white dark:bg-black font-medium'>
+          <button
+            className='rounded-full px-4 py-1 border-[1px] border-zinc-500 dark:text-white dark:bg-black font-medium'
+            onClick={() => navigate('/settings/profile')}
+          >
             Edit profile
           </button>
         </div>

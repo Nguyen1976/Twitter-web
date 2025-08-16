@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux'
 import { AppDispatch } from '~/redux/store'
 import { loginUserAPI, setUser } from '~/redux/user/userSlice'
 import { getUserProfileAPI } from '~/apis'
+import { FloatingLabel, HelperText } from 'flowbite-react'
 
 type FromData = {
   email: string
@@ -56,39 +57,37 @@ export default function SignInPopup({ onClose }: { onClose: () => void }) {
           <div className='h-[1px] bg-zinc-400 w-full ml-2'></div>
         </div>
         <form className='mt-5' onSubmit={handleSubmit(submitLogin)}>
-          <div>
-            <input
+          <div className='mt-5'>
+            <FloatingLabel
               type='email'
-              placeholder='Email'
-              className='w-full outline-none bg-transparent border border-1 border-zinc-300 rounded-md p-2 dark:text-white text-black h-14 mt-5'
+              label='Email'
+              variant='outlined'
               {...register('email', {
                 required: FIELD_REQUIRED_MESSAGE,
                 pattern: {
                   value: EMAIL_RULE,
                   message: EMAIL_RULE_MESSAGE
-                },
-                onChange: () => clearErrors('email')
+                }
               })}
             />
             {/* Error */}
-            <span className='text-red-500 text-sm mt-1 ml-1'>{errors?.email?.message as string}</span>
+            <HelperText color='failure'>{errors?.email?.message as string}</HelperText>
           </div>
-          <div>
-            <input
+          <div className='mt-5'>
+            <FloatingLabel
               type='password'
-              placeholder='Mật khẩu'
-              className='w-full outline-none bg-transparent border border-1 border-zinc-300 rounded-md p-2 dark:text-white text-black h-14 mt-5'
+              label='Mật khẩu'
+              variant='outlined'
               {...register('password', {
                 required: FIELD_REQUIRED_MESSAGE,
                 pattern: {
                   value: PASSWORD_RULE,
                   message: PASSWORD_RULE_MESSAGE
-                },
-                onChange: () => clearErrors('email')
+                }
               })}
             />
             {/* Error */}
-            <span className='text-red-500 text-sm mt-1 ml-1'>{errors?.password?.message as string}</span>
+            <HelperText color='failure'>{errors?.password?.message as string}</HelperText>
           </div>
           <button
             type='submit'

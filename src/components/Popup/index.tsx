@@ -13,7 +13,7 @@ export default function Popup({
 }) {
   return (
     <div className='fixed inset-0 bg-white bg-opacity-15 flex items-center justify-center z-50'>
-      <div className='bg-black p-4 shadow-lg dark:bg-black w-1/3 rounded-xl'>
+      <div className='bg-black p-4 shadow-lg dark:bg-black w-[510px] rounded-xl text-black dark:text-white'>
         <div className='relative flex items-center mb-4 justify-center'>
           <button
             className='absolute flex items-center justify-center text-white w-10 h-10 hover:bg-gray-600 rounded-full p-2 cursor-pointer text-right left-0'
@@ -24,7 +24,7 @@ export default function Popup({
           {/* logo */}
           <div className='text-white text-center'>
             <img
-            className='light:hidden dark:block'
+              className='light:hidden dark:block'
               width='35'
               height='35'
               src='https://img.icons8.com/ios/50/FFFFFF/twitterx--v2.png'
