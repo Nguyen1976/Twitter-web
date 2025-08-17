@@ -1,11 +1,10 @@
-import ButtonIcon from './ButtonIcon'
 import { Link, useLocation } from 'react-router-dom'
 import { dropDownItemMore, optionNavBar } from '~/constants/index'
 import { Avatar, Dropdown, DropdownItem } from 'flowbite-react'
-import Button from '~/components/Button'
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
 import { useSelector } from 'react-redux'
 import { selectUser } from '~/redux/user/userSlice'
+import { Button } from 'flowbite-react'
 
 const Header = () => {
   const location = useLocation()
@@ -39,14 +38,17 @@ const Header = () => {
           if (option.pathName === '/profile') {
             pathname = `/${user.userId}`
           }
+          let icon = pathname === pathName ? option.iconButtonActive : option.iconButton
           return (
             <Link to={pathname || '/home'} key={option.textButton}>
-              <ButtonIcon
-                isActive={pathname === pathName}
-                iconButton={option.iconButton}
-                iconButtonActive={option.iconButtonActive}
-                textButton={option.textButton}
-              />
+              <Button
+                pill
+                className={`hover:!bg-zinc-800 text-md focus:ring-0 ${pathname === pathName ? 'font-bold' : ''}`}
+                size='md'
+              >
+                {icon}
+                {option.textButton}
+              </Button>
             </Link>
           )
         })}
@@ -57,26 +59,23 @@ const Header = () => {
           dismissOnClick={false}
           renderTrigger={() => (
             <span>
-              <ButtonIcon
-                isActive={false}
-                iconButton={
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    strokeWidth={1.5}
-                    stroke='currentColor'
-                    className='size-6'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      d='M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
-                    />
-                  </svg>
-                }
-                textButton={'More'}
-              />
+              <Button className='hover:!bg-zinc-800 focus:ring-0' pill size='md'>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth={1.5}
+                  stroke='currentColor'
+                  className='size-6'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+                  />
+                </svg>
+                More
+              </Button>
             </span>
           )}
         >
@@ -91,7 +90,9 @@ const Header = () => {
 
       <div className='mt-2'>
         <div className='xl:block hidden'>
-          <Button text={'Post'} large={true} />
+          <Button pill size='xl' className='focus:ring-0 w-full font-extrabold dark:!bg-white dark:!text-black'>
+            Post
+          </Button>
         </div>
         <p className='w-12 h-12 flex items-center justify-center bg-black rounded-full xl:hidden'>
           <img

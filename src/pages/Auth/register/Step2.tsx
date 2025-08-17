@@ -1,4 +1,4 @@
-import { FloatingLabel, HelperText } from 'flowbite-react'
+import { Button, FloatingLabel, HelperText } from 'flowbite-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
@@ -101,13 +101,14 @@ export default function Step2({ setStep }: Step2Props) {
           </span>
         </p>
         {/* Bước tiếp theo */}
-        <button
+        <Button
           type='submit'
-          className={`dark:bg-white dark:text-black font-bold rounded-full p-3 mt-10 w-full ${Object.keys(errors).length ? 'opacity-50 cursor-not-allowed' : ''}`}
+          pill
+          className={`dark:!bg-white dark:!text-black font-bold mt-10 w-full `}
           disabled={Object.keys(errors).length > 0}
         >
           Tiếp theo
-        </button>
+        </Button>
       </form>
     </Popup>
   )

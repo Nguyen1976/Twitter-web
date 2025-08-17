@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { getUserProfileAPI } from '~/apis'
 import EditProfile from './EditProfile'
+import { Button } from 'flowbite-react'
 
 type ProfileProps = {
   showEditPopup?: boolean
@@ -68,12 +69,13 @@ export default function Profile({ showEditPopup = false }: ProfileProps) {
           <div className='h-36 w-36 rounded-full overflow-hidden absolute -top-[72px] left-6 border-4 border-black'>
             <img src='https://pbs.twimg.com/profile_images/1541985856071667713/9VYgARp-_400x400.png' alt='' />
           </div>
-          <button
-            className='rounded-full px-4 py-1 border-[1px] border-zinc-500 dark:text-white dark:bg-black font-medium'
+          <Button
+            pill
+            className='rounded-full border-[1px] border-zinc-500 dark:text-white dark:bg-black font-medium'
             onClick={() => navigate('/settings/profile')}
           >
             Edit profile
-          </button>
+          </Button>
         </div>
 
         {/* ... */}

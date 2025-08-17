@@ -1,6 +1,6 @@
 import { faFileImage, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Datepicker, FileInput, FloatingLabel, HelperText, Label, Textarea } from 'flowbite-react'
+import { Button, Datepicker, FileInput, FloatingLabel, HelperText, Label, Textarea } from 'flowbite-react'
 import { Controller, useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import Popup from '~/components/Popup'
@@ -20,8 +20,8 @@ export default function EditProfile({ onClose }: { onClose: () => void }) {
     register,
     handleSubmit,
     formState: { errors },
-    control,
-    reset
+    control
+    // reset
   } = useForm()
 
   const user = useSelector(selectUser)
@@ -87,7 +87,9 @@ export default function EditProfile({ onClose }: { onClose: () => void }) {
               }
             })}
           />
-          <HelperText color='failure'>{errors?.name?.message as string}</HelperText>
+          <HelperText className='flex justify-start' color='failure'>
+            {errors?.name?.message as string}
+          </HelperText>
         </div>
         <div className='mt-5'>
           <Textarea
@@ -103,7 +105,9 @@ export default function EditProfile({ onClose }: { onClose: () => void }) {
               }
             })}
           />
-          <HelperText color='failure'>{errors?.bio?.message as string}</HelperText>
+          <HelperText className='flex justify-start' color='failure'>
+            {errors?.bio?.message as string}
+          </HelperText>
         </div>
         <div className='mt-5'>
           <FloatingLabel
@@ -118,7 +122,9 @@ export default function EditProfile({ onClose }: { onClose: () => void }) {
               }
             })}
           />
-          <HelperText color='failure'>{errors?.website?.message as string}</HelperText>
+          <HelperText className='flex justify-start' color='failure'>
+            {errors?.website?.message as string}
+          </HelperText>
         </div>
         <div className='mt-5'>
           <Controller
@@ -146,15 +152,18 @@ export default function EditProfile({ onClose }: { onClose: () => void }) {
               />
             )}
           />
-          <HelperText color='failure'>{errors?.birthDate?.message as string}</HelperText>
+          <HelperText className='flex justify-start' color='failure'>
+            {errors?.birthDate?.message as string}
+          </HelperText>
         </div>
-        <button
+        <Button
+          pill
           type='submit'
-          className={`dark:bg-white dark:text-black font-bold rounded-full p-3 mt-10 w-full ${Object.keys(errors).length ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`dark:!bg-white dark:!text-black font-bold mt-10 w-full`}
           disabled={Object.keys(errors).length > 0}
         >
           Save
-        </button>
+        </Button>
       </form>
     </Popup>
   )

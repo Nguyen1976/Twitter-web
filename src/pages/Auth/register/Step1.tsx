@@ -12,7 +12,7 @@ import {
   USERNAME_RULE_MESSAGE,
   validateDateInput
 } from '~/utils/validators'
-import { Datepicker, FloatingLabel, HelperText } from 'flowbite-react'
+import { Button, Datepicker, FloatingLabel, HelperText } from 'flowbite-react'
 
 interface Step1Props {
   setStep: (step: number) => void
@@ -38,8 +38,6 @@ export default function Step1({ setStep, onClose }: Step1Props) {
       birthDate: user.birthDate || ''
     })
   }, [dispatch]) //xử lý trong trường hợp khi quay lại từ step sau đó thì vẫn sẽ còn dữ liệu
-
-  
 
   const submitRegister = (data: any) => {
     //Bắn dữ liệu lên redux ở đây
@@ -127,13 +125,14 @@ export default function Step1({ setStep, onClose }: Step1Props) {
         </div>
 
         {/* Bước tiếp theo */}
-        <button
+        <Button
+          pill
           type='submit'
-          className={`dark:bg-white dark:text-black font-bold rounded-full p-3 mt-10 w-full ${Object.keys(errors).length ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`dark:!bg-white dark:!text-black font-bold mt-10 w-full`}
           disabled={Object.keys(errors).length > 0}
         >
           Tiếp theo
-        </button>
+        </Button>
       </form>
     </Popup>
   )

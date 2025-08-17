@@ -13,7 +13,7 @@ import { useDispatch } from 'react-redux'
 import { AppDispatch } from '~/redux/store'
 import { loginUserAPI, setUser } from '~/redux/user/userSlice'
 import { getUserProfileAPI } from '~/apis'
-import { FloatingLabel, HelperText } from 'flowbite-react'
+import { Button, FloatingLabel, HelperText } from 'flowbite-react'
 
 type FromData = {
   email: string
@@ -89,13 +89,14 @@ export default function SignInPopup({ onClose }: { onClose: () => void }) {
             {/* Error */}
             <HelperText color='failure'>{errors?.password?.message as string}</HelperText>
           </div>
-          <button
+          <Button
+            pill
             type='submit'
-            className={`dark:bg-white dark:text-black font-bold rounded-full px-3 py-2 mt-10 w-full ${Object.keys(errors).length ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`dark:!bg-white dark:!text-black font-bold mt-10 w-full`}
             disabled={Object.keys(errors).length > 0}
           >
             Đăng nhập
-          </button>
+          </Button>
           {/* Xử lý quên mật khẩu sau */}
           <button
             className={`dark:bg-transparent dark:text-white dark:border-[1px] font-bold rounded-full px-3 py-2 mt-5 w-full ${Object.keys(errors).length ? 'opacity-50 cursor-not-allowed' : ''}`}

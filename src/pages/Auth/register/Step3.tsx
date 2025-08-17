@@ -1,4 +1,4 @@
-import { FloatingLabel, HelperText } from 'flowbite-react'
+import { Button, FloatingLabel, HelperText } from 'flowbite-react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -74,13 +74,14 @@ export default function Step3({ setStep }: Step3Props) {
           <HelperText color='failure'>{errors?.password?.message as string}</HelperText>
         </div>
         {/* Bước tiếp theo */}
-        <button
+        <Button
+          pill
           type='submit'
-          className={`dark:bg-white dark:text-black font-bold rounded-full p-3 mt-10 w-full ${Object.keys(errors).length ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`dark:!bg-white dark:!text-black font-bold mt-10 w-full`}
           disabled={Object.keys(errors).length > 0}
         >
           Đăng ký
-        </button>
+        </Button>
       </form>
     </Popup>
   )

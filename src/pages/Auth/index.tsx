@@ -3,6 +3,7 @@ import GoogleLoginButton from './GoogleLoginButton'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { SignupPopup } from './register/SignupPopup'
 import SignInPopup from './signin/SignInPopup'
+import { Button } from 'flowbite-react'
 
 type AuthProps = {
   showSignupPopup?: boolean
@@ -72,12 +73,14 @@ const Auth = ({ showSignupPopup = false, showSigninPopup = false }: AuthProps) =
                 <p className='dark:text-white'>HOẶC</p>
                 <div className='h-[1px] bg-zinc-400 w-full ml-2'></div>
               </div>
-              <button
-                className='bg-blue-500 text-white py-2 px-4 rounded-full w-full mt-5 font-semibold hover:bg-blue-600'
+              <Button
+                className='dark:!bg-blue-500 w-full font-extrabold mt-5'
+                size='md'
+                pill
                 onClick={() => navigate('/i/flow/signup')}
               >
                 Tạo tài khoản
-              </button>
+              </Button>
 
               {/* Điều khoản */}
               <p className='text-xs text-gray-500 mt-5'>
@@ -98,12 +101,14 @@ const Auth = ({ showSignupPopup = false, showSigninPopup = false }: AuthProps) =
 
               {/* Đã có tài khoản */}
               <p className='font-bold mt-12 text-lg dark:text-white'>Đã có tài khoản?</p>
-              <button
-                className='bg-transparent text-black py-2 px-4 rounded-full w-full mt-5 font-semibold border border-1 border-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white dark:border-gray-600'
+              <Button
+                className='bg-transparent w-full mt-5 font-semibold !border !border-gray-300 hover:!bg-gray-100 dark:hover:!bg-gray-700 dark:!border-gray-600'
+                size='md'
+                pill
                 onClick={() => navigate('/i/flow/signin')}
               >
                 Đăng nhập
-              </button>
+              </Button>
             </div>
           </div>
         </div>

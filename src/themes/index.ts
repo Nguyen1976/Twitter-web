@@ -21,12 +21,18 @@ export const customTheme: CustomFlowbiteTheme = createTheme({
       }
     },
     input: {
-      base: "dark:!bg-black light:!bg-white",
+      base: 'dark:!bg-black light:!bg-white',
       success: {
         outlined: {
           md: 'dark:!bg-black light:!bg-white'
         }
       }
+    }
+  },
+  button: {
+    base: 'flex items-center gap-4 focus:ring-0 dark:!bg-black light:!bg-white',
+    color: {
+      default: 'dark:!bg-black dark:!text-white light:!bg-white light:!text-black'
     }
   }
 })

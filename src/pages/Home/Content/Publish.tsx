@@ -1,5 +1,4 @@
-import { Avatar, Tooltip } from 'flowbite-react'
-import Button from '~/components/Button'
+import { Avatar, Button, Tooltip } from 'flowbite-react'
 import TextareaAutosize from 'react-textarea-autosize'
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -68,7 +67,9 @@ const Publish = () => {
                 </div>
               </Tooltip>
             </div>
-            <Button text='Post' className='bg-zinc-500' />
+            <Button className='dark:!bg-white dark:!text-black font-bold' size='md' pill disabled>
+              Post
+            </Button>
           </div>
         </div>
       </div>
