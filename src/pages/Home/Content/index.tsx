@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import Publish from './Publish'
+
 import Tabs from './Tabs'
+import Publish from './Publish'
 import { OPTION_TABS } from '~/constants'
 import Tweets from '~/components/Tweets'
 import { tweets } from '~/mockData'

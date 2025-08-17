@@ -1,10 +1,12 @@
-import { faArrowLeft, faCalendarDays, faLock, faSearch } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { getUserProfileAPI } from '~/apis'
-import EditProfile from './EditProfile'
 import { Button } from 'flowbite-react'
+
+import { faArrowLeft, faCalendarDays, faLock, faSearch } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+import EditProfile from './EditProfile'
+import { getUserProfileAPI } from '~/apis'
 
 type ProfileProps = {
   showEditPopup?: boolean
@@ -48,7 +50,9 @@ export default function Profile({ showEditPopup = false }: ProfileProps) {
       <div className='w-full z-10 sticky top-0 bg-[#000000a6] border-[1px] dark:border-zinc-800 dark:text-white'>
         <div className='flex items-center justify-between py-1 px-4'>
           <div className='flex items-center gap-10'>
-            <FontAwesomeIcon icon={faArrowLeft} />
+            <span className='cursor-pointer' onClick={() => navigate('/home')}>
+              <FontAwesomeIcon icon={faArrowLeft} />
+            </span>
             <div className='items-start flex flex-col'>
               <div className='flex items-center gap-4'>
                 <p className='font-bold text-xl'>{userProfile?.displayName ?? userProfile?.username ?? ''}</p>

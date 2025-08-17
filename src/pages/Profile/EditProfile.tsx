@@ -1,15 +1,18 @@
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Controller, useForm } from 'react-hook-form'
+import { Button, Datepicker, FileInput, FloatingLabel, HelperText, Label, Textarea } from 'flowbite-react'
+
 import { faFileImage, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button, Datepicker, FileInput, FloatingLabel, HelperText, Label, Textarea } from 'flowbite-react'
-import { Controller, useForm } from 'react-hook-form'
-import { useSelector } from 'react-redux'
-import Popup from '~/components/Popup'
 import { selectUser } from '~/redux/user/userSlice'
+import Popup from '~/components/Popup'
 import {
   BIO_RULE,
   BIO_RULE_MESSAGE,
   NAME_RULE,
   NAME_RULE_MESSAGE,
+  singleFileValidator,
   validateDateInput,
   WEBSITE_RULE,
   WEBSITE_RULE_MESSAGE
@@ -25,6 +28,27 @@ export default function EditProfile({ onClose }: { onClose: () => void }) {
   } = useForm()
 
   const user = useSelector(selectUser)
+
+  const [preview, setPreview] = useState<string>(user.avatarUrl)
+  const [file, setFile] = useState<File | null>(null)
+
+  const uploadAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0]
+    if (!f) {
+      return
+    }
+    const error = singleFileValidator(f)
+
+    if (error) {
+      return
+    }
+
+    const reader = new FileReader()
+    reader.readAsDataURL(f)
+    reader.onloadend = () => {
+      setPreview(reader.result as string)
+    }
+  }
 
   const onSubmit = (data: any) => {
     console.log(data)
@@ -55,11 +79,8 @@ export default function EditProfile({ onClose }: { onClose: () => void }) {
         {/* Edit profile */}
         <div className='relative flex justify-end py-3 px-6'>
           <div className='h-36 w-36 rounded-full overflow-hidden absolute -top-[72px] left-6 border-4 border-black'>
-            <img
-              src='https://pbs.twimg.com/profile_images/1541985856071667713/9VYgARp-_400x400.png'
-              alt=''
-              className='brightness-75'
-            />
+            {/* Avatar */}
+            <img src={preview} alt='' className='brightness-75' />
             <div className='absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2'>
               <Label
                 className='h-12 w-12 rounded-full overflow-hidden bg-[#0f141977] hover:bg-[#0f141991] flex justify-center items-center cursor-pointer'
@@ -72,8 +93,8 @@ export default function EditProfile({ onClose }: { onClose: () => void }) {
         </div>
       </div>
       <form action='' className='mt-16' onSubmit={handleSubmit(onSubmit)} noValidate>
-        <FileInput id='file-upload-image-header' className='hidden' defaultValue={user.headerImageUrl} />
-        <FileInput id='file-upload-image-avatar' className='hidden' defaultValue={user.avatarUrl} />
+        <FileInput id='file-upload-image-header' className='hidden' />
+        <FileInput id='file-upload-image-avatar' className='hidden' onChange={uploadAvatar} />
         <div className='mt-5'>
           <FloatingLabel
             type='text'

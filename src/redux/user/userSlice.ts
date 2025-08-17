@@ -1,9 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../store'
 import { config } from '~/constants'
-import { getUserResponse, loginResponse } from '~/types/apis'
+import { loginResponse } from '~/types/apis'
 import authorizeAxiosInstance from '~/utils/authorizeAxiosInstance'
-import axios from 'axios'
 
 interface UserState {
   id: string

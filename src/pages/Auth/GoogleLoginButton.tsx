@@ -15,7 +15,7 @@ const GoogleLoginButton: React.FC = () => {
   return (
     <button
       onClick={() => login()}
-      className='flex items-center justify-center bg-white border border-gray-300 rounded-full py-2 px-4 w-full hover:bg-gray-100 transition-colors font-semibold'
+      className='flex items-center justify-center bg-white border border-gray-300 rounded-full py-2 px-4 w-full hover:bg-gray-100 transition-colors font-semibold text-black'
     >
       <img
         src='https://developers.google.com/identity/images/g-logo.png'

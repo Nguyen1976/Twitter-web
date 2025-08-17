@@ -1,15 +1,24 @@
 import { Link, useLocation } from 'react-router-dom'
 import { dropDownItemMore, optionNavBar } from '~/constants/index'
-import { Avatar, Dropdown, DropdownItem } from 'flowbite-react'
-import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
-import { useSelector } from 'react-redux'
-import { selectUser } from '~/redux/user/userSlice'
+import { Avatar, Dropdown, DropdownItem, Popover } from 'flowbite-react'
+import { useDispatch, useSelector } from 'react-redux'
+import { logoutUserAPI, selectUser } from '~/redux/user/userSlice'
 import { Button } from 'flowbite-react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEllipsis } from '@fortawesome/free-solid-svg-icons'
+import { AppDispatch } from '~/redux/store'
 
 const Header = () => {
   const location = useLocation()
   const pathName = location.pathname
   let user = useSelector(selectUser)
+
+  let dispatch = useDispatch<AppDispatch>()
+
+  let handleLogout = () => {
+    // Handle logout logic here
+    dispatch(logoutUserAPI())
+  }
 
   return (
     <header className='fixed top-0 bottom-0 overflow-y-auto custom-scrollbar flex flex-col justify-between mb-7 h-screen py-4'>
@@ -104,16 +113,35 @@ const Header = () => {
         </p>
       </div>
 
-      {/* User */}
-      <div className='rounded-full flex gap-5 items-center justify-center mt-4'>
-        {/* <Avatar img='/src/assets/twitter.png' alt='avatar of Jese' rounded /> */}
-        <Avatar className='mr-3 xl:mr-0' rounded />
-        <div className='xl:flex flex-col items-center justify-center hidden'>
-          <p className='font-bold dark:text-white'>{user.displayName || user.username}</p>
-          <p className='text-sm text-zinc-500'>@{user.username}</p>
+      <Popover
+        placement='top'
+        trigger='click'
+        aria-labelledby='default-popover'
+        content={
+          <ul className='font-bold dark:text-white'>
+            <li className='pr-14 pl-4 py-4 hover:bg-[#ffffff1a] cursor-pointer'>Add an existing account</li>
+            <li className='pr-14 pl-4 py-4 hover:bg-[#ffffff1a] cursor-pointer' onClick={handleLogout}>
+              Log out @{user.username}
+            </li>
+          </ul>
+        }
+        theme={{
+          base: '!fixed z-50 inline-block border-white rounded-3xl shadow-[0_0px_18px_#ffffff47] overflow-hidden bg-white outline-none dark:bg-black'
+        }}
+      >
+        {/* User */}
+        <div className='rounded-full flex gap-5 items-center justify-center mt-4 cursor-pointer hover:bg-[#ffffff1a] p-2'>
+          {/* <Avatar img='/src/assets/twitter.png' alt='avatar of Jese' rounded /> */}
+          <Avatar className='mr-3 xl:mr-0' rounded />
+          <div className='xl:flex flex-col items-center justify-center hidden'>
+            <p className='font-bold dark:text-white'>{user.displayName || user.username}</p>
+            <p className='text-sm text-zinc-500'>@{user.username}</p>
+          </div>
+          <span className='dark:text-white text-2xl'>
+            <FontAwesomeIcon icon={faEllipsis} />
+          </span>
         </div>
-        <AdjustmentsHorizontalIcon className='h-6 w-6 text-black hidden xl:block dark:text-white' />
-      </div>
+      </Popover>
     </header>
   )
 }
