@@ -38,7 +38,7 @@ export const protectedRoutes: routesItem[] = [
     layout: MainSideBar
   },
   {
-    path: '/:userId',
+    path: '/profile/:userId',
     page: Profile,
     layout: MainSideBar
   },

@@ -45,7 +45,7 @@ const Header = () => {
         {optionNavBar.map((option) => {
           let pathname = option.pathName //vì tragn profile là trường hợp đặc biệt có dạng param lên phải xử lý thêm
           if (option.pathName === '/profile') {
-            pathname = `/${user.userId}`
+            pathname = `/profile/${user.userId}`
           }
           let icon = pathname === pathName ? option.iconButtonActive : option.iconButton
           return (
