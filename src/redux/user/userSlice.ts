@@ -23,7 +23,7 @@ interface UserState {
 }
 
 const intialState: UserState = {
-  id: '',
+  id: '',//id trong này sẽ là id của bảng profile
   userId: '',
   username: '',
   email: '',
@@ -54,6 +54,11 @@ export const logoutUserAPI = createAsyncThunk('user/logoutUserAPI', async () => 
   return response.data
 })
 
+export const updateUserProfileAPI = createAsyncThunk('user/updateProfile', async (payload: FormData): Promise<any> => {
+  const response = await authorizeAxiosInstance.patch(`${config.API_ROOT}/user/profile`, payload)
+  return response.data as any
+})
+
 export const userSlice = createSlice({
   name: 'user',
   initialState: intialState,
@@ -78,6 +83,15 @@ export const userSlice = createSlice({
     builder.addCase(logoutUserAPI.fulfilled, (state) => {
       state = { ...intialState }
       return state
+    })
+    builder.addCase(updateUserProfileAPI.fulfilled, (state, action) => {
+      const { success, data } = action.payload
+      if (success) {
+        state = { ...state, ...data }
+        return state
+      } else {
+        console.error('Update profile failed')
+      }
     })
   }
 })

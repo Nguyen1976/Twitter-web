@@ -8,11 +8,12 @@ interface EditAvatarProps {
   url: string
   setPreview: (url: string) => void
   setFile: (file: File) => void
-  onClose: () => void
+  setOpen: (open: boolean) => void
+  handleClose: () => void
   aspect?: number
 }
 
-export default function EditAvatar({ url, setPreview, setFile, onClose, aspect = 1 }: EditAvatarProps) {
+export default function EditImage({ url, setPreview, setFile, setOpen, handleClose, aspect = 1 }: EditAvatarProps) {
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null)
@@ -26,14 +27,14 @@ export default function EditAvatar({ url, setPreview, setFile, onClose, aspect =
       const croppedFile = await getCroppedImg(url, croppedAreaPixels)
       setFile(croppedFile)
       setPreview(URL.createObjectURL(croppedFile))
-      onClose()
+      setOpen(false)
     }
   }
 
   //onclose là đóng popup này lại và đồng thời trả về ảnh đã được chỉnh sửa
   return (
     <>
-      <Popup onNavigate={onClose} type='back'>
+      <Popup onNavigate={handleClose} type='back'>
         <div className='w-full h-[300px] relative'>
           <Cropper
             image={url} //lấy mỗi link thay vì blob

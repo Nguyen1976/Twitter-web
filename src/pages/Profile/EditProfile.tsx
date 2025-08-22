@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Datepicker, FileInput, FloatingLabel, HelperText, Label, Textarea } from 'flowbite-react'
 
 import { faFileImage, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { selectUser } from '~/redux/user/userSlice'
+import { selectUser, updateUserProfileAPI } from '~/redux/user/userSlice'
 import Popup from '~/components/Popup'
 import {
   BIO_RULE,
@@ -18,7 +18,18 @@ import {
   WEBSITE_RULE_MESSAGE
 } from '~/utils/validators'
 
-import EditAvatar from './EditAvatar'
+import EditImage from './EditImage'
+import { AppDispatch } from '~/redux/store'
+
+type FormData = {
+  displayName?: string
+  bio?: string
+  location?: string
+  website?: string
+  avatarUrl?: any
+  headerImageUrl?: any
+  // birthDate?: string //tạm thời chưa cần update birthDate
+}
 
 export default function EditProfile({ onClose }: { onClose: () => void }) {
   const {
@@ -27,12 +38,20 @@ export default function EditProfile({ onClose }: { onClose: () => void }) {
     formState: { errors },
     control
     // reset
-  } = useForm()
+  } = useForm<FormData>()
 
   const user = useSelector(selectUser)
 
-  const [previewAvatar, setPreviewAvatar] = useState<string>(user.avatarUrl) //vừa set preview vửa set url tạm vì cần truyền vào EditAvatar url để edit
+  const dispatch = useDispatch<AppDispatch>()
+
+  const [previewAvatar, setPreviewAvatar] = useState<string>(user.avatarUrl) //vừa set preview vửa set url tạm vì cần truyền vào EditImage url để edit
   const [fileAvatar, setFileAvatar] = useState<File | null>(null) //file này sẽ gửi lên server và set file từ cropped
+
+  const [previewHeader, setPreviewHeader] = useState<string>(user.headerImageUrl)
+  const [fileHeader, setFileHeader] = useState<File | null>(null)
+
+  const [openEditFileAvatar, setOpenEditFileAvatar] = useState<boolean>(false)
+  const [openEditFileHeader, setOpenEditFileHeader] = useState<boolean>(false)
 
   const uploadAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0]
@@ -48,25 +67,8 @@ export default function EditProfile({ onClose }: { onClose: () => void }) {
     setPreviewAvatar(URL.createObjectURL(f)) //set preview để hiển thị ảnh đã chọn
     setFileAvatar(f)
 
-    handleOpenEditFileAvatar() //open sau khi set Preview tức là nó đã xuất hiện trong cropper
-  }
-
-  const [openEditFileAvatar, setOpenEditFileAvatar] = useState<boolean>(false)
-
-  const handleOpenEditFileAvatar = () => {
     setOpenEditFileAvatar(true)
   }
-
-  const handleCloseEditFileAvatar = () => {
-    setOpenEditFileAvatar(false)
-  }
-
-  const onSubmit = (data: any) => {
-    console.log(data)
-  }
-
-  const [previewHeader, setPreviewHeader] = useState<string>(user.headerImageUrl)
-  const [fileHeader, setFileHeader] = useState<File | null>(null)
 
   const uploadHeader = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0]
@@ -83,16 +85,43 @@ export default function EditProfile({ onClose }: { onClose: () => void }) {
     setPreviewHeader(URL.createObjectURL(f))
     setFileHeader(f)
 
-    handleOpenEditFileHeader()
-  }
-  const [openEditFileHeader, setOpenEditFileHeader] = useState<boolean>(false)
-
-  const handleOpenEditFileHeader = () => {
     setOpenEditFileHeader(true)
+  }
+
+  const handleCloseEditFileAvatar = () => {
+    setOpenEditFileAvatar(false)
+    setPreviewAvatar(user.avatarUrl)
+    setFileAvatar(null)
   }
 
   const handleCloseEditFileHeader = () => {
     setOpenEditFileHeader(false)
+    setPreviewHeader(user.headerImageUrl)
+    setFileHeader(null)
+  }
+
+  const onSubmit = (data: FormData) => {
+    let formData = new FormData()
+    if (fileAvatar) {
+      formData.append('avatarUrl', fileAvatar)
+    }
+    if (fileHeader) {
+      formData.append('headerImageUrl', fileHeader)
+    }
+    formData.append('displayName', data.displayName || '')
+    formData.append('bio', data.bio || '')
+    formData.append('location', data.location || '')
+    formData.append('website', data.website || '')
+
+    // Call API to update profile
+    /*vì ở phía db sẽ không trả về url ảnh vậy mà khi người dùng thoát ra 
+    cũng chưa chắc db đã xử lý xong để ném vào db vì upload 
+    và trang chính là 2 page lên nó sẽ thực hiện reload lại để get thông tin user
+    Vậy lên ở component này vẫn phải xử lý chuyển ảnh thành base 64 để tạm thời lưu vào redux trong trường hợp mà server chưa xử lý xong ảnh sẽ hiện là ảnh base 64 
+    Nhưng vẫn có 1 vần đề khi thoát ra trang profile thì nó sẽ thực hiện load lại trang và get thoogn tin user từ db
+    mà trường trường hợp server chưa xử lý xong tức là chưa lưu vào db thì trang vẫn sẽ get ảnh cũ 
+    Vậy nên tạm thời chấp nhận việc chưa đồng bộ ảnh và sẽ tìm giải pháp sau*/
+    dispatch(updateUserProfileAPI(formData))
   }
 
   return (
@@ -151,7 +180,7 @@ export default function EditProfile({ onClose }: { onClose: () => void }) {
                   label='Name'
                   variant='outlined'
                   defaultValue={user.displayName}
-                  {...register('name', {
+                  {...register('displayName', {
                     pattern: {
                       value: NAME_RULE,
                       message: NAME_RULE_MESSAGE
@@ -159,7 +188,7 @@ export default function EditProfile({ onClose }: { onClose: () => void }) {
                   })}
                 />
                 <HelperText className='flex justify-start' color='failure'>
-                  {errors?.name?.message as string}
+                  {errors?.displayName?.message as string}
                 </HelperText>
               </div>
               <div className='mt-5'>
@@ -197,11 +226,11 @@ export default function EditProfile({ onClose }: { onClose: () => void }) {
                   {errors?.website?.message as string}
                 </HelperText>
               </div>
-              <div className='mt-5'>
+              {/* <div className='mt-5'>
                 <Controller
                   name='birthDate'
                   control={control}
-                  defaultValue={new Date(user.birthDate)}
+                  defaultValue={user.birthDate}
                   rules={{
                     required: 'Ngày sinh là bắt buộc',
                     validate: validateDateInput
@@ -209,6 +238,10 @@ export default function EditProfile({ onClose }: { onClose: () => void }) {
                   render={({ field }) => (
                     <Datepicker
                       {...field}
+                      value={field.value ? new Date(field.value) : null}
+                      onChange={(date) => {
+                        field.onChange(date ? new Date(date).toISOString() : '') // Date -> string ISO
+                      }}
                       theme={{
                         root: {
                           input: {
@@ -226,7 +259,7 @@ export default function EditProfile({ onClose }: { onClose: () => void }) {
                 <HelperText className='flex justify-start' color='failure'>
                   {errors?.birthDate?.message as string}
                 </HelperText>
-              </div>
+              </div> */}
               <Button
                 pill
                 type='submit'
@@ -239,19 +272,21 @@ export default function EditProfile({ onClose }: { onClose: () => void }) {
           </Popup>
         )}
       {openEditFileAvatar && (
-        <EditAvatar
+        <EditImage
           url={previewAvatar}
           setPreview={setPreviewAvatar}
           setFile={setFileAvatar}
-          onClose={handleCloseEditFileAvatar}
+          setOpen={setOpenEditFileAvatar}
+          handleClose={handleCloseEditFileAvatar}
         />
       )}
       {openEditFileHeader && (
-        <EditAvatar
+        <EditImage
           url={previewHeader}
           setPreview={setPreviewHeader}
           setFile={setFileHeader}
-          onClose={handleCloseEditFileHeader}
+          setOpen={setOpenEditFileHeader}
+          handleClose={handleCloseEditFileHeader}
           aspect={28 / 9}
         />
       )}

@@ -22,9 +22,9 @@ export const BIO_RULE_MESSAGE = 'Vui lòng nhập mô tả hợp lệ, tối đa
 export const WEBSITE_RULE = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/
 export const WEBSITE_RULE_MESSAGE = 'Vui lòng nhập địa chỉ website hợp lệ.'
 
-export const validateDateInput = (value: string) => {
+export const validateDateInput = (value: string | undefined) => {
   const today = new Date()
-  const selectedDate = new Date(value)
+  const selectedDate = new Date(value!)
   const age = today.getFullYear() - selectedDate.getFullYear()
   const monthDiff = today.getMonth() - selectedDate.getMonth()
   const dayDiff = today.getDate() - selectedDate.getDate()
